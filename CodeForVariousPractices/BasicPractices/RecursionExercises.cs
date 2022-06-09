@@ -70,4 +70,37 @@ public class RecursionPractices
       Console.Write($"{incrementer}, ");
       PrintBothEvenAndOddNumbers(incrementer + 2, input);
    }
+   // 7. Write a program in C# Sharp to check whether a number is prime or not using recursion.
+   public bool CheckForPrime(int divisor, decimal input)
+   {
+      // // Test to ensure the input value is a whole number
+      // int inputInt = (int)input;
+      // decimal inputDec = (decimal)inputInt;
+      // bool isWholeNum = inputDec == input;
+      // if (isWholeNum)
+      //    throw new ArgumentException($"{nameof(input)} must be a whole, positive integer.");
+      if (divisor < 2)
+         throw new ArgumentException($"{nameof(divisor)} cannot be less than 2");
+      if (divisor > input / 2)
+         return true;
+      if (input % divisor == 0)
+         return false;
+      return CheckForPrime(divisor + 1, input);
+   }
+   public bool CheckForPrime(int divisor, int input)
+   {
+      // // Test to ensure the input value is a whole number
+      // int inputInt = (int)input;
+      // decimal inputDec = (decimal)inputInt;
+      // bool isWholeNum = inputDec == input;
+      // if (isWholeNum)
+      //    throw new ArgumentException($"{nameof(input)} must be a whole, positive integer.");
+      if (divisor < 2)
+         throw new ArgumentException($"{nameof(divisor)} cannot be less than 2");
+      if (divisor > input / 2)
+         return true;
+      if (input % divisor == 0)
+         return false;
+      return CheckForPrime(divisor + 1, input);
+   }
 }
