@@ -1,4 +1,4 @@
 bin/
-.vscode/**
+.vscode/
 obj/
-.omnisharp/**
+.omnisharp/

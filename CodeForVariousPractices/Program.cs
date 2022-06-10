@@ -17,6 +17,9 @@ static class Program
          { input2, expected2 }
       };
       Test_PrintedRecursionPrintMethods(values, recursion);
+
+      // Test the Fibonacci recursive Algorithm
+      Test_PrintTheFirstNNumbersOfFibonacci(recursion);
    }
 
    private static void Test_PrintedRecursionPrintMethods(Dictionary<int, string> values, RecursionPractices recursion)
@@ -40,5 +43,21 @@ static class Program
    private static void PrintInputAndExpectedValues(Dictionary<int, string> values, int index, int input, string methodName)
    {
       Console.WriteLine($"\n\nTest {methodName} method\nInput {index + 1}:\n\t{input}\nExpected Output {index + 1}:\n\t{values[input]}\nActual {index + 1}:");
+   }
+
+   private static void Test_PrintTheFirstNNumbersOfFibonacci(RecursionPractices recursion)
+   {
+   fibtest:
+      // Test Fibonacci
+      Console.WriteLine("\nEnter a positive integer in order to return that many numbers of the Fibonacci Sequence");
+      string? input = Console.ReadLine();
+      bool didConvert = int.TryParse(input, out int converted);
+      if (didConvert)
+         recursion.PrintNNumbersOfFibonacci(converted, 0, 0);
+      else
+      {
+         Console.WriteLine($"You entered {input}, which is not valid. Please try again.");
+         goto fibtest;
+      }
    }
 }
