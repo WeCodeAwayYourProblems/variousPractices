@@ -53,13 +53,13 @@ public class RecursionPractices
       ReturnNumberOfDigitsWithRecursion(input / 10);
       Console.WriteLine($" {input % 10} ");
    }
-   // 6. Write a program in C to print even or odd numbers in a given range using recursion.
-   public void PrintBothEvenAndOddNumbers(int incrementer, int input)
+   // 6. Write a program in C to return even or odd numbers in a given range using recursion.
+   public List<int> ReturnEitherEvenOrOddNumbers(int incrementer, int input, List<int> returnList)
    {
       if (incrementer > input)
-         return;
-      Console.Write($"{incrementer}, ");
-      PrintBothEvenAndOddNumbers(incrementer + 2, input);
+         return returnList;
+      returnList.Add(incrementer);
+      return ReturnEitherEvenOrOddNumbers(incrementer + 2, input, returnList);
    }
    // 7. Write a program in C# Sharp to check whether a number is prime or not using recursion.
    public bool CheckForPrime(int divisor, decimal input)
@@ -71,7 +71,8 @@ public class RecursionPractices
       // Check for divisibility in input
       if (input % divisor == 0)
          return false;
-      // Check whether the divisor is greater than half the input -- this saves time
+      // Check whether the divisor is greater than half the input 
+      // -- this saves time, as nothing greater than half of any number divides evenly into it
       if (divisor > input / 2)
          return true;
 
@@ -80,7 +81,7 @@ public class RecursionPractices
       if (divisor == 2)
          newDivisor = divisor + 1; // 3 is also a prime number
       else
-         newDivisor = divisor + 2; // Although not all odd numbers are prime, all prime numbers are odd (except 2, I guess?)
+         newDivisor = divisor + 2; // Although not all odd numbers are prime, all prime numbers are odd (except 2)
       return CheckForPrime(newDivisor, input);
    }
    public bool CheckForPrime(int divisor, int input)
@@ -103,6 +104,40 @@ public class RecursionPractices
       else
          newDivisor = divisor + 2; // Although not all odd numbers are prime, all prime numbers are odd (except 2, I guess?)
       return CheckForPrime(newDivisor, input);
+   }
+   // This method passes a list of used divisors so as not to use non-prime numbers in the division process
+   public bool CheckForPrimeSimple_FutureINumberGeneric(int input, int divisor, List<int> divisorValues)
+   {
+      // Check to ensure the divisor is not less than 2
+      if (divisor < 2)
+         throw new ArgumentException($"{nameof(divisor)} cannot be less than 2");
+
+      // Check for divisibility in input
+      if (input % divisor == 0)
+         return false;
+      // Check whether the divisor is greater than half the input 
+      // -- this is because no integer greater than half another integer can be multiplied ...
+      // ... by another integer to evenly return the larger integer
+      if (divisor < input / 2)
+         return true;
+
+      // If divisor is 2, increment it by 1
+      int newDivisor;
+      if (divisor == 2)
+         newDivisor = divisor + 1;
+      // Otherwise, increment accordingly
+      else
+      {
+         // The new divisor has to be incremented by 2 before it's checked for validity
+         newDivisor = divisor + 2;
+
+         // Check to see whether the new divisor is divisible by any number in the divisor list
+         // If the new divisor increments too large, we'll default to incrementing it by 2;
+         while (divisorValues.Any(val => val % newDivisor == 0) && divisor < input / 2)
+            newDivisor += 2;
+      }
+      divisorValues.Add(divisor);
+      return CheckForPrimeSimple_FutureINumberGeneric(input, newDivisor, divisorValues);
    }
    private List<int> PrimeDivisors = new();
    public bool CheckForPrimeComplex(int divisor, decimal input)
