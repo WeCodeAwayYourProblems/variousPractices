@@ -137,11 +137,51 @@ public class RecursionPractices
       // If the divisor is 2, increment the divisor accordingly
       int newDivisor;
       if (divisor == 2)
-         newDivisor = divisor++;
+      {
+         newDivisor = divisor + 1;
+         PrimeDivisors.Add(divisor);
+         PrimeDivisors.Add(divisor + 1);
+      }
       else
-         newDivisor = divisor + 2;
+      {
+         newDivisor = FindNextPrimeNumberForNextDivisor(divisor, input);
+      }
       return CheckForPrimeComplex(newDivisor, input);
+
+      // Local Function
+      int FindNextPrimeNumberForNextDivisor(int divisor, decimal input)
+      {
+         int returnInt = default;
+         // Find the next natural number n between (current divisor + 2) and (input / 2) that is prime ...
+         // ... and make that the next divisor
+         for (int div = divisor + 2; div > input / 2; div += 2) // increment by 2 so that we always have odd numbers
+         {
+            // Check whether the new divisor is evenly divisible by any of the PrimeDivisors numbers
+            // If it is not, it is considered prime and made the new divisor
+            if (!PrimeDivisors.Any(prime => prime % div == 0))
+            {
+               returnInt = div;
+
+               // Only add the new divisor to the list of primes if it is not already contained therein. 
+               if (!PrimeDivisors.Any(prime => prime == div))
+                  PrimeDivisors.Add(div);
+               break;
+            }
+            //    If the number IS divisible by one of the PrimeDivisorsNumbers,
+            // then we continue the forLoop
+         }
+
+         //    If no such number could be found,
+         // we assume that the PrimeDivisors number list is empty or incomplete,
+         // and we assign newdivisor to divisor+2
+         if (returnInt == default)
+            returnInt = divisor + 2;
+         return returnInt;
+      }
    }
+
+
+
    public bool CheckForPrimeComplex(int divisor, int input)
    {
       // Check whether the divisor is less than 2
