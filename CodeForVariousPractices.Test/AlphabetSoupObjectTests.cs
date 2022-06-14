@@ -6,33 +6,25 @@ namespace CodeForVariousPractices.Test;
 
 public class AlphabetSoupObjectTests
 {
-   [Fact]
-   public void InputStringReturnAlphaPairsMethod_ReturnsTheCorrectNumberOfPairs()
+   public AlphabetSoupObjectTests()
    {
-      // Setup
-      AlphabetSoup soup = new();
-      // // Input strings
-      string inputStr1 = "hwpd";
-      string inputStr2 = "abcd";
-      // // Expected outputs
-      int expected1 = 2;
-      int expected2 = 6;
-      // // Expected out message
-      string expectedMessage = "No error";
+      soup = new();
+   }
+   public AlphabetSoup soup { get; }
 
+   [Theory]
+   [InlineData("hwpd", 2, "No error")]
+   [InlineData("abcd", 6, "No error")]
+   public void InputStringReturnAlphaPairsMethod_ReturnsTheCorrectNumberOfPairs(string input, int expected, string expectedMessage)
+   {
       // Execution
-      string message1;
-      string message2;
-      int actual1 = soup.InputStringReturnAlphaPairs(inputStr1, out message1);
-      int actual2 = soup.InputStringReturnAlphaPairs(inputStr2, out message2);
+      string actualMessage;
+      int actual = soup.InputStringReturnAlphaPairs(input, out actualMessage);
 
       // Assertions
-      Assert.Equal(expected1, actual1);
-      Assert.Equal(expected2, actual2);
+      Assert.Equal(expected, actual);
       Assert.Contains<string>(expectedMessage.ToLower(),
          new List<string>()
-            { message1, message1.ToLower(),
-            message2, message2.ToLower() });
-
+            { actualMessage, actualMessage.ToLower()});
    }
 }
