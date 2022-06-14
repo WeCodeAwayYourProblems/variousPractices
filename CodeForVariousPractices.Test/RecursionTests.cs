@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using CodeForVariousPracices.BasicPractices;
 using Xunit;
 
@@ -10,144 +11,99 @@ public class RecursionTests
    {
       recursion = new();
    }
-   [Fact]
-   public void AddsEachNaturalNumberOfNumberN()
+   [Theory]
+   [InlineData(10, 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10)]
+   [InlineData(20, 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 + 17 + 18 + 19 + 20)]
+   public void AddsEachNaturalNumberOfNumberN(int input, int expected)
    {
-      // Setup
-      int input1 = 10;
-      int input2 = 20;
-
-      // Expected values
-      int expected1 = 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10;
-      int expected2 = 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 + 17 + 18 + 19 + 20;
-
       // Actual output
-      int actual1 = recursion.ReturnTheSumOfNNaturalNumbers(input1);
-      int actual2 = recursion.ReturnTheSumOfNNaturalNumbers(input2);
+      int actual = recursion.ReturnTheSumOfNNaturalNumbers(input);
 
       // Assersions
-      Assert.Equal(expected1, actual1);
-      Assert.Equal(expected2, actual2);
+      Assert.Equal(expected, actual);
    }
-   [Fact]
-   public void MethodCorrectlyIdentifiesPrimeNumbers()
+   [Theory]
+   [InlineData(37, true)]
+   [InlineData(13, true)]
+   [InlineData(21, false)]
+   [InlineData(8191, true)]
+   [InlineData(8193, false)]
+   [InlineData(565168463, false)]
+   public void MethodCorrectlyIdentifiesPrimeNumbers_Int(int input, bool expected)
    {
-      // Setup
-      int input1 = 37;
-      decimal input2 = 13;
-      int input3 = 21;
-      decimal input4 = 8191;
-      int input5 = 8193;
-      decimal input6 = 15498155494565515997;
-      // decimal input7 = decimal.MaxValue;
-      // int input8 = int.MaxValue;
-
-      // Expected Outputs
-      bool expected1 = true;
-      bool expected2 = true;
-      bool expected3 = false;
-      bool expected4 = true;
-      bool expected5 = false;
-      bool expected6 = false;
-      // bool expected7 = false;
-      // bool expected8 = false;
-
-      // Actual outputs
-      bool actual1 = recursion.CheckForPrime(2, input1);
-      bool actual2 = recursion.CheckForPrime(2, input2);
-      bool actual3 = recursion.CheckForPrime(2, input3);
-      bool actual4 = recursion.CheckForPrime(2, input4);
-      bool actual5 = recursion.CheckForPrime(2, input5);
-      bool actual6 = recursion.CheckForPrime(2, input6);
-      // bool actual7 = recursion.CheckForPrime(2, input7);
-      // bool actual8 = recursion.CheckForPrime(2, input8);
+      // Actual output
+      bool actual = recursion.CheckForPrime(2, input);
 
       // Assersions  
-      Assert.Equal(expected1, actual1);
-      Assert.Equal(expected2, actual2);
-      Assert.Equal(expected3, actual3);
-      Assert.Equal(expected4, actual4);
-      Assert.Equal(expected5, actual5);
-      Assert.Equal(expected6, actual6);
-      // Assert.Equal(expected7, actual7);
-      // Assert.Equal(expected8, actual8);
+      Assert.Equal(expected, actual);
    }
-   [Fact]
-   public void MethodCorrectlyIdentifiesPalindromeStrings()
+   [Theory]
+   [InlineData(37, true)]
+   [InlineData(13, true)]
+   [InlineData(21, false)]
+   [InlineData(8191, true)]
+   [InlineData(8193, false)]
+   [InlineData(15498155494565515997, false)]
+   public void MethodCorrectlyIdentifiesPrimeNumbers_Decimal(decimal input, bool expected)
    {
-      // Setup 
-      string input1 = "radar";
-      string input2 = "racecar";
-      string input3 = "Ben";
-      string input4 = "Supercalifragilisticexpialidocious";
-      string input5 = "Tattarrattat";
+      // Actual output
+      bool actual = recursion.CheckForPrime(2, input);
 
-      // Expected Values
-      bool expected1 = true;
-      bool expected2 = true;
-      bool expected3 = false;
-      bool expected4 = false;
-      bool expected5 = true;
+      // Assersions  
+      Assert.Equal(expected, actual);
+   }
+   [Theory(Skip = "This method is finding the final value to be true when it should not.")]
+   [InlineData(37, true)]
+   [InlineData(13, true)]
+   [InlineData(21, false)]
+   [InlineData(8191, true)]
+   [InlineData(8193, false)]
+   [InlineData(565168463, false)]
+   public void MethodCorrectlyIdentifiesPrimeNumbers_SimpleMethod_FutureINumberGeneric(int input, bool expected)
+   {
+      // Actual output
+      bool actual = recursion.CheckForPrimeSimple_FutureINumberGeneric(input, 2, new List<int> { });
 
-      // Actual Values
-      bool actual1 = recursion.CheckStringForPalindrome(input1);
-      bool actual2 = recursion.CheckStringForPalindrome(input2);
-      bool actual3 = recursion.CheckStringForPalindrome(input3);
-      bool actual4 = recursion.CheckStringForPalindrome(input4);
-      bool actual5 = recursion.CheckStringForPalindrome(input5);
+      // Assersions  
+      Assert.Equal(expected, actual);
+   }
+   [Theory]
+   [InlineData("radar", true)]
+   [InlineData("racecar", true)]
+   [InlineData("Ben", false)]
+   [InlineData("Supercalifragilisticexpialidocious", false)]
+   [InlineData("Tattarrattat", true)]
+   public void MethodCorrectlyIdentifiesPalindromeStrings(string input, bool expected)
+   {
+      // Actual output
+      bool actual = recursion.CheckStringForPalindrome(input);
 
       // Assertions
-      Assert.Equal(expected1, actual1);
-      Assert.Equal(expected2, actual2);
-      Assert.Equal(expected3, actual3);
-      Assert.Equal(expected4, actual4);
-      Assert.Equal(expected5, actual5);
+      Assert.Equal(expected, actual);
    }
-   [Fact]
-   public void RemoveStringMethod_RemovesTheFirstAndLastCharacterOfAStringAndReturnsTheResult()
+   [Theory]
+   [InlineData("radar", "ada")]
+   [InlineData("racecar", "aceca")]
+   [InlineData("ben", "e")]
+   public void RemoveStringMethod_RemovesTheFirstAndLastCharacterOfAStringAndReturnsTheResult(string input, string expected)
    {
-      // Setup
-      string input1 = "radar";
-      string input2 = "racecar";
-      string input3 = "ben";
-
-      // Expected values
-      string expected1 = "ada";
-      string expected2 = "aceca";
-      string expected3 = "e";
-
-      // Actual
-      string actual1 = recursion.RemoveFirstAndLastLetter(input1);
-      string actual2 = recursion.RemoveFirstAndLastLetter(input2);
-      string actual3 = recursion.RemoveFirstAndLastLetter(input3);
+      // Actual output
+      string actual = recursion.RemoveFirstAndLastLetter(input);
 
       // Assertions
-      Assert.Equal(expected1, actual1);
-      Assert.Equal(expected2, actual2);
-      Assert.Equal(expected3, actual3);
+      Assert.Equal(expected, actual);
    }
-   [Fact]
-   public void FactorialMethodReturnsFactorial()
+   [Theory]
+   [InlineData(10, 3628800)]
+   [InlineData(5, 120)]
+   [InlineData(11, 39916800)]
+   public void FactorialMethodReturnsFactorial(int input, int expected)
    {
-      // Setup
-      int input1 = 10;
-      int input2 = 5;
-      int input3 = 11;
-
-      // Expected results
-      int expected1 = 3628800;
-      int expected2 = 120;
-      int expected3 = 39916800;
-
-      // Actual results
-      int actual1 = recursion.Factorial(input1, 3, 2);
-      int actual2 = recursion.Factorial(input2, 3, 2);
-      int actual3 = recursion.Factorial(input3, 3, 2);
+      // Actual output
+      int actual = recursion.Factorial(input, 3, 2);
 
       // Assertions
-      Assert.Equal(expected1, actual1);
-      Assert.Equal(expected2, actual2);
-      Assert.Equal(expected3, actual3);
+      Assert.Equal(expected, actual);
    }
 
 }
