@@ -4,27 +4,21 @@ namespace CodeForVariousPracices.BasicPractices;
 
 public class RecursionPractices
 {
-   // 1. Write a program in C# Sharp to print the first n natural number using recursion.
-   public void PrintAllNaturalNumbersInAscendingOrder(int input, int constant = 1)
+   // 1. Write a program in C# Sharp to return a list of the first n natural numbers using recursion.
+   public List<int> AllNaturalNumbersInAscendingOrder(int input, List<int> returnList, int constant = 1)
    {
-      if (input == 1)
-      {
-         Console.Write($"{constant}");
-         return;
-      }
-      Console.Write($"{constant}, ");
-      PrintAllNaturalNumbersInAscendingOrder(input - 1, constant + 1);
+      if (input < 1)
+         return returnList;
+      returnList.Add(constant);
+      return AllNaturalNumbersInAscendingOrder(input - 1, returnList, constant + 1);
    }
    // 2. Write a program in C# Sharp to print numbers from n to 1 using recursion.
-   public void PrintNaturalNumbersInDescendingOrder(int input)
+   public List<int> ReturnNaturalNumbersInDescendingOrder(int input, List<int> returnList)
    {
-      if (input == 1)
-      {
-         Console.Write($"{input}");
-         return;
-      }
-      Console.Write($"{input}, ");
-      PrintNaturalNumbersInDescendingOrder(input - 1);
+      if (input < 1)
+         return returnList;
+      returnList.Add(input);
+      return ReturnNaturalNumbersInDescendingOrder(input - 1, returnList);
    }
    // 3. Write a program in C# Sharp to find the sum of first n natural numbers using recursion.
    public int ReturnTheSumOfNNaturalNumbers(int input)
