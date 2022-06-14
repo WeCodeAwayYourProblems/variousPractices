@@ -118,7 +118,8 @@ public class RecursionPractices
       // Check whether the divisor is greater than half the input 
       // -- this is because no integer greater than half another integer can be multiplied ...
       // ... by another integer to evenly return the larger integer
-      if (divisor < input / 2)
+      int halfInput = input / 2; // This value is used more than once
+      if (divisor > halfInput)
          return true;
 
       // If divisor is 2, increment it by 1
@@ -132,12 +133,43 @@ public class RecursionPractices
          newDivisor = divisor + 2;
 
          // Check to see whether the new divisor is divisible by any number in the divisor list
-         // If the new divisor increments too large, we'll default to incrementing it by 2;
-         while (divisorValues.Any(val => val % newDivisor == 0) && divisor < input / 2)
+         // If the new divisor increments too large, we'll default to incrementing it by 2
+         while (divisorValues.Any(val => newDivisor % val == 0) && newDivisor < halfInput)
             newDivisor += 2;
       }
       divisorValues.Add(divisor);
       return CheckForPrimeSimple_FutureINumberGeneric(input, newDivisor, divisorValues);
+   }
+   public List<int> ReturnPrimeList_FutureINumberGeneric(int input, int divisor, List<int> divisorValues)
+   {
+      // Check to ensure the divisor is not less than 2
+      if (divisor < 2)
+         throw new ArgumentException($"{nameof(divisor)} cannot be less than 2");
+
+      // Check for divisibility in input
+      if (input % divisor == 0)
+         return divisorValues;
+      // Check whether the divisor is greater than or equal to input
+      if (divisor >= input)
+         return divisorValues;
+
+      // If divisor is 2, increment it by 1
+      int newDivisor;
+      if (divisor == 2)
+         newDivisor = divisor + 1;
+      // Otherwise, increment accordingly
+      else
+      {
+         // The new divisor has to be incremented by 2 before it's checked for validity
+         newDivisor = divisor + 2;
+
+         // Check to see whether the new divisor is divisible by any number in the divisor list
+         // If the new divisor increments too large, we'll default to incrementing it by 2
+         while (divisorValues.Any(val => newDivisor % val == 0) && newDivisor <= input)
+            newDivisor += 2;
+      }
+      divisorValues.Add(divisor);
+      return ReturnPrimeList_FutureINumberGeneric(input, newDivisor, divisorValues);
    }
    private List<int> PrimeDivisors = new();
    public bool CheckForPrimeComplex(int divisor, decimal input)
