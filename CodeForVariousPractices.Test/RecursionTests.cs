@@ -68,6 +68,21 @@ public class RecursionTests
       Assert.Equal(expected, actual);
    }
    [Theory]
+   [InlineData(37, true)]
+   [InlineData(13, true)]
+   [InlineData(21, false)]
+   [InlineData(8191, true)]
+   [InlineData(8193, false)]
+   [InlineData(565168463, false)]
+   public void ReturnsPrimeNumbersList_FutureINumberGeneric(int input, bool expected)
+   {
+      // Actual output
+      bool actual = recursion.CheckForPrimeSimple_FutureINumberGeneric(input, 2, new List<int> { });
+
+      // Assersions  
+      Assert.Equal(expected, actual);
+   }
+   [Theory]
    [InlineData("radar", true)]
    [InlineData("racecar", true)]
    [InlineData("Ben", false)]
