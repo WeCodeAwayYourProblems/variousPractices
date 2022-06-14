@@ -29,15 +29,12 @@ public class RecursionPractices
          return input + ReturnTheSumOfNNaturalNumbers(input - 1);
    }
    // 4. Write a program in C# Sharp to display the individual digits of a given number using recursion.
-   public void DisplayDigitsOfANumber(int input)
+   public List<int> ReturnDigitsOfANumber(int input, List<int> returnList)
    {
       if (input < 10)
-      {
-         Console.Write($"{input}");
-         return;
-      }
-      DisplayDigitsOfANumber(input / 10);
-      Console.Write($"{input % 10}, ");
+         return returnList;
+      returnList.Add(input % 10);
+      return ReturnDigitsOfANumber(input / 10, returnList);
    }
    // 5. Write a program in C# Sharp to count the number of digits in a number using recursion.
    public int ReturnNumberOfDigitsWithoutRecursion(int input)
