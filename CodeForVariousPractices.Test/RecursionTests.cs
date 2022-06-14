@@ -52,7 +52,7 @@ public class RecursionTests
       // Assersions  
       Assert.Equal(expected, actual);
    }
-   [Theory(Skip = "This method is finding the final value to be true when it should not.")]
+   [Theory]
    [InlineData(37, true)]
    [InlineData(13, true)]
    [InlineData(21, false)]
