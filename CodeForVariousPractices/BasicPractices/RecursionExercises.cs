@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Text;
 
@@ -142,27 +143,23 @@ public class RecursionPractices
       return CheckForPrimeSimple_FutureINumberGeneric(input, newDivisor, divisorValues);
    }
    // I don't think this method can be recursive for extremely large values
-   public HashSet<int> ReturnPrimeList_FutureINumberGeneric(decimal input, string fullyQualifiedFileLocation, HashSet<int> divisorValues)
+   public ConcurrentBag<int> ReturnPrimeList_FutureINumberGeneric(decimal input, string fullFileLocation, ConcurrentBag<int> divisorValues)
    {
       // Input cannot be less than 2
       if (input < 2)
          throw new ArgumentException($"{nameof(input)} value must be greater than 2");
 
       // 2 does not need to be added to this list yet because it's inefficient to check whether odd numbers can be divided evenly by 2
-      System.IO.StreamWriter file = new System.IO.StreamWriter(fullyQualifiedFileLocation, false);
+      StreamWriter file = new StreamWriter(fullFileLocation, false);
       file.Write("{2, ");
 
-      // Stopwatch for timekeeping
-      Stopwatch watch = new();
-      TimeSpan seconds = new TimeSpan(0, 0, 3);
-      TimeSpan second = new TimeSpan(0, 0, 3);
-      watch.Start();
       int incrementer = 0;
       // The for loop incrementer is always a new candidate for prime numbers, so we only need to check modulus results ...
       // ... starting at the first odd prime ("3") and continuing every odd number therefrom
       for (int div = 3; div < input; div += 2)
       {
-         if (!divisorValues.Any(val => div % val == 0))
+         // AsParallel allows us to use multiple threads as the collection size increases
+         if (!divisorValues.AsParallel().Any(val => div % val == 0))
          {
             incrementer++;
             divisorValues.Add(div);
@@ -174,11 +171,9 @@ public class RecursionPractices
             }
          }
       }
-      watch.Stop();
       file.Write("}");
       file.Close();
-      Console.WriteLine($"{watch.Elapsed}");
-      divisorValues.Add(2); // 2 is added after the fact in order to keep continuity of facts
+      divisorValues.Add(2); // 2 is added after the fact
       return divisorValues;
    }
    private List<int> PrimeDivisors = new();
