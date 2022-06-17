@@ -31,10 +31,10 @@ public class TestAbsoluteDifference
       InlineData(new string[] { "abc", "cdaef", "js", "php" }, new string[] { "bc", "cdef", "js", "php" }),
       InlineData(new string[] { "jack", "jackolantern", "beauty", "gilligan" }, new string[] { "jck", "jckolntern", "beuty", "gillign" })
    ]
-   public void MethodRemovesAllAInEachStringOfInputList(string[] input, List<string> expected)
+   public void MethodRemovesAllAInEachStringOfInputList(string[] input, string[] expected)
    {
       // Actual output
-      IEnumerable<string> actual = Algorithms.RemoveAllAInEachString(input);
+      string[] actual = Algorithms.RemoveAllAInEachString(input);
 
       // Assertions
       Assert.Equal(expected, actual);

@@ -40,7 +40,7 @@ public class BasicAlgorithms
    }
 
    // Write a C# Sharp program to remove all "a" in each string in given list of strings and return the new string.
-   public List<string> RemoveAllAInEachString(IEnumerable<string> stringArray)
+   public string[] RemoveAllAInEachString(IEnumerable<string> stringArray)
    {
       // Create the list that will return the final product
       List<string> returnList = new();
@@ -70,6 +70,6 @@ public class BasicAlgorithms
          returnList.Add(builder.ToString());
       }
 
-      return returnList;
+      return returnList.ToArray();
    }
 }

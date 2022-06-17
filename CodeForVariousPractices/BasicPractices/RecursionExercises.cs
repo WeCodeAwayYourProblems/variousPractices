@@ -221,10 +221,14 @@ public class RecursionPractices
       {
          if (IsPrime(div))
          {
+            incrementer++;
             divisorValues.Add(div);
             file.Write($"{div}, ");
             if (incrementer == 15)
+            {
                file.Write("\n");
+               incrementer = 0;
+            }
          }
       }
       file.Write("}");
@@ -480,7 +484,7 @@ public class RecursionPractices
       }
 
       // The second item in the array is the LCM
-      if (returnArray[1] > 1 || returnArray[1] == default)
+      if (returnArray[1] == default)
       {
          int mult_1 = input1 * incrementer;
          int mult_2 = input2 * incrementer;

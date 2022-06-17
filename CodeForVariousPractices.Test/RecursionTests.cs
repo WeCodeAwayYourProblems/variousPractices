@@ -8,9 +8,8 @@ public class RecursionTests
 {
    RecursionPractices recursion { get; }
    public RecursionTests()
-   {
-      recursion = new();
-   }
+   { recursion = new(); }
+
    [
       Theory,
       InlineData(10, 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10),
@@ -42,6 +41,7 @@ public class RecursionTests
       // Assersions  
       Assert.Equal(expected, actual);
    }
+
    [
       Theory,
       InlineData(37, true),
@@ -59,6 +59,7 @@ public class RecursionTests
       // Assersions  
       Assert.Equal(expected, actual);
    }
+
    [
       Theory,
       InlineData(37, true),
@@ -76,6 +77,7 @@ public class RecursionTests
       // Assersions  
       Assert.Equal(expected, actual);
    }
+
    [
       Theory,
       InlineData(37, true),
@@ -93,6 +95,7 @@ public class RecursionTests
       // Assersions  
       Assert.Equal(expected, actual);
    }
+
    [
       Theory,
       InlineData("radar", true),
@@ -109,6 +112,7 @@ public class RecursionTests
       // Assertions
       Assert.Equal(expected, actual);
    }
+
    [
       Theory,
       InlineData("radar", "ada"),
@@ -123,6 +127,7 @@ public class RecursionTests
       // Assertions
       Assert.Equal(expected, actual);
    }
+
    [
       Theory,
       InlineData(10, 3628800),
@@ -137,10 +142,17 @@ public class RecursionTests
       // Assertions
       Assert.Equal(expected, actual);
    }
+
    [
       Theory,
-      InlineData(37, true), InlineData(13, true), InlineData(21, false),
-      InlineData(8191, true), InlineData(8193, false), InlineData(565168463, false), InlineData(1231654684561321379, false), InlineData(1231654684561, false)
+      InlineData(37, true),
+      InlineData(13, true),
+      InlineData(21, false),
+      InlineData(8191, true),
+      InlineData(8193, false),
+      InlineData(565168463, false),
+      InlineData(1231654684561321379, false),
+      InlineData(1231654684561, false)
    ]
    public void IsPrimeMethod_ReturnsProperBoolean(Int64 input, bool expected)
    {
@@ -150,6 +162,7 @@ public class RecursionTests
       // Assertions
       Assert.Equal(expected, actual);
    }
+
    [
       Theory,
       InlineData(10, 15, new int[2] { 5, 30 }),
