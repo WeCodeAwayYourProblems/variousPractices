@@ -152,8 +152,8 @@ public class RecursionTests
    }
    [
       Theory,
-      InlineData(10, 15, new int[2] { 5, 30 })
-      InlineData(10, 15, new int[2] { 5, 30 })
+      InlineData(10, 15, new int[2] { 5, 30 }),
+      InlineData(6, 15, new int[2] { 3, 30 })
    ]
    public void FindsTheGCDandLCMOfTwoNumbers(int input1, int input2, int[] expected)
    {

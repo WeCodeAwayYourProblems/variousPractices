@@ -3,7 +3,7 @@ using System.Text;
 namespace CodeForVariousPracices.BasicPractices;
 public class BasicAlgorithms
 {
-   public int ReturnSumOfTwoInts(int a, int b)
+   public int ReturnSumOfTwoInts_ExceptIfTheTwoInputsAreEqual(int a, int b)
    {
       int results = 0;
 
