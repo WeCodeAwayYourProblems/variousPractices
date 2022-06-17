@@ -143,7 +143,7 @@ public class RecursionPractices
       return CheckForPrimeSimple_FutureINumberGeneric(input, newDivisor, divisorValues);
    }
    // I don't think this method can be recursive for extremely large values
-   public ConcurrentBag<int> ReturnPrimeList_FutureINumberGeneric(decimal input, string fullFileLocation, ConcurrentBag<int> divisorValues)
+   public ConcurrentBag<int> ReturnPrimeList_FutureINumberGeneric(decimal input, string fullFileLocation, bool useLinq, ConcurrentBag<int> divisorValues)
    {
       // Input cannot be less than 2
       if (input < 2)
@@ -158,23 +158,93 @@ public class RecursionPractices
       // ... starting at the first odd prime ("3") and continuing every odd number therefrom
       for (int div = 3; div < input; div += 2)
       {
-         // AsParallel allows us to use multiple threads as the collection size increases
-         if (!divisorValues.AsParallel().Any(val => div % val == 0))
+         if (!useLinq)
+            incrementer = ForeachOption(divisorValues, file, incrementer, div);
+         else
          {
-            incrementer++;
-            divisorValues.Add(div);
-            file.Write($"{div}, ");
-            if (incrementer == 15)
-            {
-               file.Write($"\n");
-               incrementer = 0;
-            }
+            // AsParallel allows us to use multiple threads as the collection size increases
+            if (!divisorValues.AsParallel().Any(val => div % val == 0))
+               incrementer = AddToPrimeList(divisorValues, file, incrementer, div);
          }
       }
       file.Write("}");
       file.Close();
       divisorValues.Add(2); // 2 is added after the fact
       return divisorValues;
+
+      static int AddToPrimeList(ConcurrentBag<int> divisorValues, StreamWriter file, int incrementer, int div)
+      {
+         incrementer++;
+         divisorValues.Add(div);
+         file.Write($"{div}, ");
+         if (incrementer == 15)
+         {
+            file.Write($"\n");
+            incrementer = 0;
+         }
+
+         return incrementer;
+      }
+
+      static int ForeachOption(ConcurrentBag<int> divisorValues, StreamWriter file, int incrementer, int div)
+      {
+         bool[] isPrime = new bool[1] { true };
+         var squrt = Math.Sqrt(div);
+         foreach (var prime in divisorValues)
+         {
+            if (prime < squrt && div % prime == 0)
+            {
+               isPrime[0] = false;
+               break;
+            }
+         }
+         if (isPrime[0])
+            incrementer = AddToPrimeList(divisorValues, file, incrementer, div);
+
+         return incrementer;
+      }
+   }
+   public List<int> ReturnPrimeList_FutureINumberGeneric(long input, string fullFileLocation, List<int> divisorValues)
+   {
+      // Input cannot be less than 2
+      if (input < 2)
+         throw new ArgumentException($"{nameof(input)} value must be greater than 2");
+
+      // 2 does not need to be added to this list yet because it's inefficient to check whether odd numbers can be divided evenly by 2
+      StreamWriter file = new StreamWriter(fullFileLocation, false);
+      file.Write("{2, ");
+
+      int incrementer = 0;
+      // The for loop incrementer is always a new candidate for prime numbers, so we only need to check modulus results ...
+      // ... starting at the first odd prime ("3") and continuing every odd number therefrom
+      for (int div = 3; div < input; div += 2)
+      {
+         if (IsPrime(div))
+         {
+            divisorValues.Add(div);
+            file.Write($"{div}, ");
+            if (incrementer == 15)
+               file.Write("\n");
+         }
+      }
+      file.Write("}");
+      file.Close();
+      divisorValues.Add(2); // 2 is added after the fact
+      return divisorValues;
+   }
+   public bool IsPrime(Int64 input) // This method duplicates effort because it checks for odd numbers that are divisible by other prime numbers
+   {
+      if (input < 2)
+         return false;
+      if (input % 2 == 0)
+         return false;
+      var min = input / 2;
+      for (var divisor = 3; divisor < min; divisor += 2)
+      {
+         if (input % divisor == 0)
+            return false;
+      }
+      return true;
    }
    private List<int> PrimeDivisors = new();
    public bool CheckForPrimeComplex(int divisor, decimal input)
@@ -386,5 +456,49 @@ public class RecursionPractices
       if (input < 1)
          return;
       PrintNNumbersOfFibonacci(input, currentF, nextF);
+   }
+   // 12. Write a program in C# Sharp to find the LCM and GCD of two numbers using recursion. 
+   public int[] LcmAndGcdOfTwoNumbers(int input1, int input2, int incrementer, int[] returnArray)
+   {
+      // The return array cannot hold more than two (2) items
+      if (returnArray.Length > 2)
+         throw new ArgumentException($"{nameof(returnArray)} parameter cannot contain more than 2 items.");
+
+      // The incrementer cannot be less than 2
+      if (incrementer < 2)
+         throw new ArgumentException($"{nameof(incrementer)} parameter cannot be less than 2.");
+
+      // If one of the two numbers is prime, then the greatest common denominator is 1
+      if (IsPrime(input1) || IsPrime(input2))
+         returnArray[0] = 1;
+
+      // The first item in the array is the GCD
+      if (returnArray[0] < 1 || returnArray[0] == default)
+      {
+         if (input1 % incrementer == 0 && input2 % incrementer == 0)
+            returnArray[0] = incrementer;
+      }
+
+      // The second item in the array is the LCM
+      if (returnArray[1] > 1 || returnArray[1] == default)
+      {
+         int mult_1 = input1 * incrementer;
+         int mult_2 = input2 * incrementer;
+
+         if (mult_1 % input2 == 0)
+            returnArray[1] = mult_1;
+         if (mult_2 % input1 == 0)
+            returnArray[1] = mult_2;
+      }
+
+      // If both numbers of the return array are valid, return the results
+      bool firstIsValid = returnArray[0] > 1 || returnArray[0] != default;
+      bool secondIsValid = returnArray[1] > 1 || returnArray[1] != default;
+      if (firstIsValid && secondIsValid)
+         return returnArray;
+
+      // Otherwise, increment the incrementer and restart the recursion
+      incrementer++;
+      return LcmAndGcdOfTwoNumbers(input1, input2, incrementer, returnArray);
    }
 }
