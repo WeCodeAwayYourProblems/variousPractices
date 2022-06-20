@@ -505,4 +505,18 @@ public class RecursionPractices
       incrementer++;
       return LcmAndGcdOfTwoNumbers(input1, input2, incrementer, returnArray);
    }
+   // 14. Write a program in C# Sharp to get the reverse of a string using recursion.
+   public string ReverseInputString(string input, string reversal)
+   {
+      // if input has been exhausted, return results
+      if (input == "")
+         return reversal;
+
+      // Take the last letter from the original input and append it to the reversal
+      string newInput = input.Substring(0, input.Length - 1);
+      string newReversal = reversal + input[input.Length - 1];
+
+      // Return the result
+      return ReverseInputString(newInput, newReversal);
+   }
 }

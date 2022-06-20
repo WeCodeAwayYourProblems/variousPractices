@@ -154,7 +154,7 @@ public class RecursionTests
       InlineData(1231654684561321379, false),
       InlineData(1231654684561, false)
    ]
-   public void IsPrimeMethod_ReturnsProperBoolean(Int64 input, bool expected)
+   public void IsPrimeMethod_ReturnsProperBoolean(long input, bool expected)
    {
       // Actual output
       bool actual = recursion.IsPrime(input);
@@ -172,6 +172,19 @@ public class RecursionTests
    {
       // Actual
       int[] actual = recursion.LcmAndGcdOfTwoNumbers(input1, input2, incrementer: 2, new int[2] { default, default });
+
+      // Assertions
+      Assert.Equal(expected, actual);
+   }
+   [
+      Theory,
+      InlineData("w3resource", "ecruoser3w"),
+      InlineData("Benjamin Wallace Bowen", "newoB ecallaW nimajneB")
+   ]
+   public void ReturnsInputStringReversed(string input, string expected)
+   {
+      // Actual
+      string actual = recursion.ReverseInputString(input, "");
 
       // Assertions
       Assert.Equal(expected, actual);

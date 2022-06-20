@@ -45,5 +45,12 @@ static class Program
 
       // Find the LCM GCD of two numbers
       int[] result = recursion.LcmAndGcdOfTwoNumbers(10, 15, 2, new int[2] { default, default });
+
+      // Find the reversal of a given string
+      string input = "w3resource";
+      string expected = "ecruoser3w";
+      string actual = recursion.ReverseInputString(input, "");
+
+      Console.WriteLine($"Input: {input}. Expected output: {expected}. Actual output: {actual}");
    }
 }
