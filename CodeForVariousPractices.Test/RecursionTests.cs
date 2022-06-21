@@ -6,19 +6,21 @@ using Xunit;
 namespace CodeForVariousPractices.Test;
 public class RecursionTests
 {
-   RecursionPractices recursion { get; }
+   RecursionPractices Recursion { get; }
    public RecursionTests()
-   { recursion = new(); }
+   { Recursion = new(); }
 
    [
       Theory,
       InlineData(10, 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10),
+      InlineData(11, 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11),
+      InlineData(15, 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15),
       InlineData(20, 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 16 + 17 + 18 + 19 + 20)
    ]
    public void AddsEachNaturalNumberOfNumberN(int input, int expected)
    {
       // Actual output
-      int actual = recursion.ReturnTheSumOfNNaturalNumbers(input);
+      int actual = Recursion.ReturnTheSumOfNNaturalNumbers(input);
 
       // Assersions
       Assert.Equal(expected, actual);
@@ -36,7 +38,7 @@ public class RecursionTests
    public void MethodCorrectlyIdentifiesPrimeNumbers_Int(int input, bool expected)
    {
       // Actual output
-      bool actual = recursion.CheckForPrime(2, input);
+      bool actual = Recursion.CheckForPrime(2, input);
 
       // Assersions  
       Assert.Equal(expected, actual);
@@ -54,7 +56,7 @@ public class RecursionTests
    public void MethodCorrectlyIdentifiesPrimeNumbers_Decimal(decimal input, bool expected)
    {
       // Actual output
-      bool actual = recursion.CheckForPrime(2, input);
+      bool actual = Recursion.CheckForPrime(2, input);
 
       // Assersions  
       Assert.Equal(expected, actual);
@@ -72,7 +74,7 @@ public class RecursionTests
    public void MethodCorrectlyIdentifiesPrimeNumbers_SimpleMethod_FutureINumberGeneric(int input, bool expected)
    {
       // Actual output
-      bool actual = recursion.CheckForPrimeSimple_FutureINumberGeneric(input, 2, new List<int> { });
+      bool actual = Recursion.CheckForPrimeSimple_FutureINumberGeneric(input, 2, new List<int> { });
 
       // Assersions  
       Assert.Equal(expected, actual);
@@ -90,7 +92,7 @@ public class RecursionTests
    public void ReturnsPrimeNumbersList_FutureINumberGeneric(int input, bool expected)
    {
       // Actual output
-      bool actual = recursion.CheckForPrimeSimple_FutureINumberGeneric(input, 2, new List<int> { });
+      bool actual = Recursion.CheckForPrimeSimple_FutureINumberGeneric(input, 2, new List<int> { });
 
       // Assersions  
       Assert.Equal(expected, actual);
@@ -107,7 +109,7 @@ public class RecursionTests
    public void MethodCorrectlyIdentifiesPalindromeStrings(string input, bool expected)
    {
       // Actual output
-      bool actual = recursion.CheckStringForPalindrome(input);
+      bool actual = Recursion.CheckStringForPalindrome(input);
 
       // Assertions
       Assert.Equal(expected, actual);
@@ -122,7 +124,7 @@ public class RecursionTests
    public void RemoveStringMethod_RemovesTheFirstAndLastCharacterOfAStringAndReturnsTheResult(string input, string expected)
    {
       // Actual output
-      string actual = recursion.RemoveFirstAndLastLetter(input);
+      string actual = Recursion.RemoveFirstAndLastLetter(input);
 
       // Assertions
       Assert.Equal(expected, actual);
@@ -137,7 +139,7 @@ public class RecursionTests
    public void FactorialMethodReturnsFactorial(int input, int expected)
    {
       // Actual output
-      int actual = recursion.Factorial(input, 3, 2);
+      int actual = Recursion.Factorial(input, 3, 2);
 
       // Assertions
       Assert.Equal(expected, actual);
@@ -150,14 +152,14 @@ public class RecursionTests
       InlineData(21, false),
       InlineData(8191, true),
       InlineData(8193, false),
-      InlineData(565168463, false),
-      InlineData(1231654684561321379, false),
-      InlineData(1231654684561, false)
+   // InlineData(565168463, false),
+   // InlineData(1231654684561321379, false),
+   // InlineData(1231654684561, false)
    ]
    public void IsPrimeMethod_ReturnsProperBoolean(long input, bool expected)
    {
       // Actual output
-      bool actual = recursion.IsPrime(input);
+      bool actual = Recursion.IsPrime(input);
 
       // Assertions
       Assert.Equal(expected, actual);
@@ -166,12 +168,14 @@ public class RecursionTests
    [
       Theory,
       InlineData(10, 15, new int[2] { 5, 30 }),
+      InlineData(10, 25, new int[2] { 5, 50 }),
+      InlineData(8, 21, new int[2] { 1, 168 }),
       InlineData(6, 15, new int[2] { 3, 30 })
    ]
    public void FindsTheGCDandLCMOfTwoNumbers(int input1, int input2, int[] expected)
    {
       // Actual
-      int[] actual = recursion.LcmAndGcdOfTwoNumbers(input1, input2, incrementer: 2, new int[2] { default, default });
+      int[] actual = Recursion.LcmAndGcdOfTwoNumbers(input1, input2, incrementer: 2, new int[2] { default, default });
 
       // Assertions
       Assert.Equal(expected, actual);
@@ -184,7 +188,23 @@ public class RecursionTests
    public void ReturnsInputStringReversed(string input, string expected)
    {
       // Actual
-      string actual = recursion.ReverseInputString(input, "");
+      string actual = Recursion.ReverseInputString(input, "");
+
+      // Assertions
+      Assert.Equal(expected, actual);
+   }
+
+   [
+      Theory,
+      InlineData(5, 3, 5 * 5 * 5),
+      InlineData(10, 3, 10 * 10 * 10),
+      InlineData(10, 6, 10 * 10 * 10 * 10 * 10 * 10),
+      InlineData(3, 5, 3 * 3 * 3 * 3 * 3)
+   ]
+   public void FindThePowerOfANumberRecursively(int baseValue, int exponent, int expected)
+   {
+      // Actual
+      int actual = Recursion.ReturnPowerOfANumber(baseValue, exponent, 1);
 
       // Assertions
       Assert.Equal(expected, actual);

@@ -477,10 +477,15 @@ public class RecursionPractices
          returnArray[0] = 1;
 
       // The first item in the array is the GCD
-      if (returnArray[0] < 1 || returnArray[0] == default)
+      bool gcdIsBlank = returnArray[0] < 1 || returnArray[0] == default;
+      if (gcdIsBlank)
       {
          if (input1 % incrementer == 0 && input2 % incrementer == 0)
             returnArray[0] = incrementer;
+
+         // If the incrementer is equal to one of the two inputs, then the greatest common denominator is 1
+         if (gcdIsBlank && (incrementer == input1 || incrementer == input2))
+            returnArray[0] = 1;
       }
 
       // The second item in the array is the LCM
@@ -518,5 +523,23 @@ public class RecursionPractices
 
       // Return the result
       return ReverseInputString(newInput, newReversal);
+   }
+   // 15. Write a program in C# Sharp to calculate the power of any number using recursion.
+   public int ReturnPowerOfANumber(int baseValue, int exponent, int result)
+   {
+      // If the result is not 1 to begin with, throw
+      if (result < 1)
+         throw new ArgumentException($"{nameof(result)} parameter cannot be less than 1 upon first iteration.");
+
+      // Find the result
+      result = result * baseValue;
+
+      // Decrement the exponent
+      exponent--;
+
+      if (exponent == 0)
+         return result;
+
+      return ReturnPowerOfANumber(baseValue, exponent, result);
    }
 }
