@@ -168,4 +168,73 @@ public class GenericMathOperations
       incrementer++;
       PrintAllValuesOfNRaisedToAllNumbers0ToY_Recursive(n, y, incrementer);
    }
+   // Alternative
+   public int ReturnThePowerOfTwoNumbers(int input, int power) => input ^ power;
+
+   // 4. Write a C# Sharp program to calculate true mean value, mean with rounding away from zero and mean with rounding to nearest of some specified decimal values.
+   public Dictionary<string, decimal> CalculateMeanValue_True_AwayFromZero_ToNearest(decimal[] inputValues)
+   {
+      Dictionary<string, decimal> returnDict = new();
+
+      // Calculate The True mean
+      decimal trueMeanSum = 0;
+      foreach (decimal val in inputValues)
+      {
+         trueMeanSum += val;
+      }
+      returnDict.Add("The true mean of the given inputs is: ", trueMeanSum / inputValues.Length);
+
+      // Calculate the mean away from zero
+      decimal awayMeanSum = 0;
+      foreach (decimal val in inputValues)
+      {
+         awayMeanSum += Math.Round(val, 1, MidpointRounding.AwayFromZero);
+      }
+      returnDict.Add("The mean rounded away from zero of the given inputs is: ", awayMeanSum / inputValues.Length);
+
+      // Calculate the mean to nearest
+      decimal nearMeanSum = 0;
+      foreach (decimal val in inputValues)
+      {
+         nearMeanSum += Math.Round(val, 1, MidpointRounding.ToEven);
+      }
+      returnDict.Add("The mean rounded to the nearest value of the given inputs is: ", nearMeanSum / inputValues.Length);
+
+      return returnDict;
+   }
+
+   // 5. Write a C# Sharp program to return the sign of a single value
+   public string ReturnWhetherAGivenValueIsGreaterOrLessThanZero(int input)
+   {
+      if (input < 0)
+         return $"{input} is less than zero";
+      else if (input > 0)
+         return $"{input} is greater than zero";
+      else
+         return $"{input} is equal to zero";
+   }
+
+   // 6. Return the N root of any number
+   public double ReturnTheNRootOfAnyNumber(double input, int power) => Math.Pow(input, 1.0 / power);
+
+   // 7. Write a C# Sharp program to find the whole number and fractional part from a positive and a negative Decimal number
+   public Dictionary<string, decimal> ReturnWholeAndPartOfAnyGivenNumber(decimal input)
+   {
+      Dictionary<string, decimal> returnDict = new();
+      decimal absolute = Math.Abs(input);
+
+      decimal integral = Math.Floor(absolute);
+      decimal remainder = absolute - integral;
+      if (input > 0)
+      {
+         returnDict.Add($"The integral of {input} is: ", integral);
+         returnDict.Add($"The remainder of {input} is: ", remainder);
+      }
+      else
+      {
+         returnDict.Add($"The integral of {input} is: ", integral * -1);
+         returnDict.Add($"The remainder of {input} is: ", remainder * -1);
+      }
+      return returnDict;
+   }
 }

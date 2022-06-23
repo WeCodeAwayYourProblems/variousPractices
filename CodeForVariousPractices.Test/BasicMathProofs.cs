@@ -1,46 +1,54 @@
+using System;
 using Xunit;
 
 namespace CodeForVariousPractices.Test;
 
 public class BasicMathProofs
 {
-   [Fact]
-   public void IntegerDivisionsReturnWholeNumbers()
+   [
+      Theory,
+      InlineData(1239, 123),
+      InlineData(1234, 123)
+   ]
+   public void IntegerDivisionsReturnWholeNumbers(int input, int expected)
    {
-      // Integers to be divided by 10
-      int num1 = 1239;
-      int num2 = 1234;
-
-      // Expected values
-      int expected1 = 123;
-      int expected2 = 123;
-
       // Actual values
-      int actual1 = num1 / 10;
-      int actual2 = num2 / 10;
+      int actual = input / 10;
 
       // Assert how the number is rounded -- either up or down
-      Assert.Equal(expected1, actual1);
-      Assert.Equal(expected2, actual2);
+      Assert.Equal(expected, actual);
    }
 
-   [Fact]
-   public void IntegerMod10ReturnsTheLastDigitOfLargeNumbers()
+   [
+      Theory,
+      InlineData(1239, 9),
+      InlineData(1234, 4)
+   ]
+   public void IntegerMod10ReturnsTheLastDigitOfLargeNumbers(int input, int expected)
    {
-      // Integers to be mod by 10
-      int num1 = 1239;
-      int num2 = 1234;
-
-      // Expected Values
-      int expected1 = 9;
-      int expected2 = 4;
-
       // Actual values
-      int actual1 = num1 % 10;
-      int actual2 = num2 % 10;
+      int actual = input % 10;
 
       // Assert
-      Assert.Equal(expected1, actual1);
-      Assert.Equal(expected2, actual2);
+      Assert.Equal(expected, actual);
+   }
+   [
+      Theory,
+      InlineData(5.5, 5.0, 0.5),
+      InlineData(-25.56, -25.0, -0.56)
+   ]
+   public void AnyNonWholeNumberFlooredReturnsTheIntegral(double input, double expected1, double expected2)
+   {
+      // Setup
+      double integer = Math.Floor(input);
+      double remainder;
+      if (input > 0)
+         remainder = input + integer;
+      else
+         remainder = input + (integer * -1);
+
+      // Assertions
+      Assert.Equal(expected1, integer);
+      Assert.Equal(expected2, remainder);
    }
 }
