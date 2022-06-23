@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using CodeForVariousPracices.BasicPractices;
 using Xunit;
 
