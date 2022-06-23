@@ -7,14 +7,14 @@ namespace CodeForVariousPractices.Test;
 public class AlphabetSoupObjectTests
 {
    public AlphabetSoupObjectTests()
-   {
-      soup = new();
-   }
+   { soup = new(); }
    public AlphabetSoup soup { get; }
 
-   [Theory]
-   [InlineData("hwpd", 2, "No error")]
-   [InlineData("abcd", 6, "No error")]
+   [
+      Theory,
+      InlineData("hwpd", 2, "No error"),
+      InlineData("abcd", 6, "No error")
+   ]
    public void InputStringReturnAlphaPairsMethod_ReturnsTheCorrectNumberOfPairs(string input, int expected, string expectedMessage)
    {
       // Execution
