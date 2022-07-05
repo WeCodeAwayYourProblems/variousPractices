@@ -1,6 +1,8 @@
 ﻿using CodeForVariousPracices.BasicPractices;
 using System.Diagnostics;
 using System.Collections.Concurrent;
+using CodeForVariousPracices.SolveSudokuPuzzle;
+using System.Text;
 
 namespace CodeForVariousPracices;
 static class Program
@@ -52,5 +54,27 @@ static class Program
       string actual = recursion.ReverseInputString(input, "");
 
       Console.WriteLine($"Input: {input}. Expected output: {expected}. Actual output: {actual}");
+
+      // Find the solution to Sudoku Puzzle
+      string path = @"C:\Users\ben.bowen_fox-pest\CS_area\Portfolio\variousPractices\CodeForVariousPractices\SolveSudokuPuzzle\UnsolvedPuzzles\Puzzle1.csv";
+      SudokuCsvReader reader = new SudokuCsvReader(path, emptyCell: "0", delimiter: ",");
+      SudokuPuzzleSolver solver = new(reader.ReadBoard());
+
+
+      // Place the solution in a csv file
+      string solutionFile = @"C:\Users\ben.bowen_fox-pest\CS_area\Portfolio\variousPractices\CodeForVariousPractices\SolveSudokuPuzzle\SolvedPuzzles\SolutionToPuzzle1.csv";
+      var array = solver.Solve();
+      StringBuilder sb = new();
+      foreach (var row in array)
+      {
+         for (var cell = 0; cell < row.Length; cell++)
+         {
+            sb.Append($"{row[cell].Value}");
+            if (cell >= row.Length - 1)
+               sb.Append(",");
+         }
+         sb.Append("\n");
+      }
+      File.WriteAllText(solutionFile, sb.ToString());
    }
 }

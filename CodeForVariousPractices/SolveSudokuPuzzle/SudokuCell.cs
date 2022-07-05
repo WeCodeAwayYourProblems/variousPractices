@@ -8,15 +8,9 @@ public class SudokuCell
          throw new ArgumentException("Original puzzle contains invalid numbers.");
 
       if (value > 0)
-      {
          Unchangeable = true;
-         Changeable = false;
-      }
       else
-      {
          Unchangeable = false;
-         Changeable = true;
-      }
 
       Value = value;
 
@@ -24,7 +18,9 @@ public class SudokuCell
       Column = column;
    }
    public readonly bool Unchangeable;
-   public readonly bool Changeable;
+   public bool Changeable
+   { get => !Unchangeable; }
+
    public int Value { get; set; }
 
    public readonly int Row;
