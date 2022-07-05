@@ -14,7 +14,7 @@ public class SudokuPuzzleSolver
       Column7 = new SudokuCell[9];
       Column8 = new SudokuCell[9];
       Column9 = new SudokuCell[9];
-      AllColumns = new SudokuCell[][] { Column9, Column8, Column7, Column6, Column5, Column4, Column3, Column2, Column1 };
+      AllColumns = new SudokuCell[][] { Column1, Column2, Column3, Column4, Column5, Column6, Column7, Column8, Column9 };
 
       Row1 = new SudokuCell[9];
       Row2 = new SudokuCell[9];
@@ -45,77 +45,80 @@ public class SudokuPuzzleSolver
       string[] lines = File.ReadAllLines(fullLocationOfOriginalPuzzleInTextFileForm);
 
       // Iterate through each line
-      for (int column = 0; column < lines.Length; column++)
+      for (int row = 0; row < lines.Length; row++)
       {
          // All row items are now contained in a string array
-         string[] segment = lines[column].Split(delimiter);
+         string[] line = lines[row].Split(delimiter);
 
          // Convert all row items into integers
-         for (int row = 0; row < segment.Length; row++)
+         for (int column = 0; column < line.Length; column++)
          {
+            // Parse the row item into an integer
             int value;
-            bool parsed = int.TryParse(segment[row], out value);
-            if (!parsed && segment[row] == emptyCell) // If the value is an empty cell value, then it is considered valid, even if it's not an integer
+            bool parsed = int.TryParse(line[column], out value);
+
+            // If the value is an empty cell value, then it is considered valid, even if it's not an integer
+            if (line[column] == emptyCell)
                value = 0;
-            if (!parsed && segment[row] != emptyCell)
+            if (!parsed && line[column] != emptyCell)
                throw ex;
 
             // Assign column, row, and block values
-            switch (row)
+            switch (column)
             {
                case 0: // First column
-                  SudokuCell cell0 = new(value, row, column);
-                  Column1[column] = cell0;
-                  AssignRows(ex, column, row, cell0);
-                  AssignBlocksSwitch(ex, column, row, cell0);
+                  SudokuCell cell0 = new(value, column, row);
+                  Column1[row] = cell0;
+                  AssignRows(ex, cell0);
+                  AssignBlocksSwitch(ex, cell0);
                   break;
                case 1: // Second column
-                  SudokuCell cell1 = new(value, row, column);
-                  Column1[column] = cell1;
-                  AssignRows(ex, column, row, cell1);
-                  AssignBlocksSwitch(ex, column, row, cell1);
+                  SudokuCell cell1 = new(value, column, row);
+                  Column1[row] = cell1;
+                  AssignRows(ex, cell1);
+                  AssignBlocksSwitch(ex, cell1);
                   break;
                case 2: // Third column
-                  SudokuCell cell2 = new(value, row, column);
-                  Column1[column] = cell2;
-                  AssignRows(ex, column, row, cell2);
-                  AssignBlocksSwitch(ex, column, row, cell2);
+                  SudokuCell cell2 = new(value, column, row);
+                  Column1[row] = cell2;
+                  AssignRows(ex, cell2);
+                  AssignBlocksSwitch(ex, cell2);
                   break;
                case 3: // Fourth column
-                  SudokuCell cell3 = new(value, row, column);
-                  Column1[column] = cell3;
-                  AssignRows(ex, column, row, cell3);
-                  AssignBlocksSwitch(ex, column, row, cell3);
+                  SudokuCell cell3 = new(value, column, row);
+                  Column1[row] = cell3;
+                  AssignRows(ex, cell3);
+                  AssignBlocksSwitch(ex, cell3);
                   break;
                case 4: // Fifth column
-                  SudokuCell cell4 = new(value, row, column);
-                  Column1[column] = cell4;
-                  AssignRows(ex, column, row, cell4);
-                  AssignBlocksSwitch(ex, column, row, cell4);
+                  SudokuCell cell4 = new(value, column, row);
+                  Column1[row] = cell4;
+                  AssignRows(ex, cell4);
+                  AssignBlocksSwitch(ex, cell4);
                   break;
                case 5: // Sixth column
-                  SudokuCell cell5 = new(value, row, column);
-                  Column1[column] = cell5;
-                  AssignRows(ex, column, row, cell5);
-                  AssignBlocksSwitch(ex, column, row, cell5);
+                  SudokuCell cell5 = new(value, column, row);
+                  Column1[row] = cell5;
+                  AssignRows(ex, cell5);
+                  AssignBlocksSwitch(ex, cell5);
                   break;
                case 6: // Seventh column
-                  SudokuCell cell6 = new(value, row, column);
-                  Column1[column] = cell6;
-                  AssignRows(ex, column, row, cell6);
-                  AssignBlocksSwitch(ex, column, row, cell6);
+                  SudokuCell cell6 = new(value, column, row);
+                  Column1[row] = cell6;
+                  AssignRows(ex, cell6);
+                  AssignBlocksSwitch(ex, cell6);
                   break;
                case 7: // Eighth column
-                  SudokuCell cell7 = new(value, row, column);
-                  Column1[column] = cell7;
-                  AssignRows(ex, column, row, cell7);
-                  AssignBlocksSwitch(ex, column, row, cell7);
+                  SudokuCell cell7 = new(value, column, row);
+                  Column1[row] = cell7;
+                  AssignRows(ex, cell7);
+                  AssignBlocksSwitch(ex, cell7);
                   break;
                case 8: // Ninth column
-                  SudokuCell cell8 = new(value, row, column);
-                  Column1[column] = cell8;
-                  AssignRows(ex, column, row, cell8);
-                  AssignBlocksSwitch(ex, column, row, cell8);
+                  SudokuCell cell8 = new(value, column, row);
+                  Column1[row] = cell8;
+                  AssignRows(ex, cell8);
+                  AssignBlocksSwitch(ex, cell8);
                   break;
 
                default:
@@ -125,58 +128,58 @@ public class SudokuPuzzleSolver
       }
 
    }
-   private void AssignRows(ArgumentException ex, int column, int row, SudokuCell cell)
+   private void AssignRows(ArgumentException ex, SudokuCell cell)
    {
       // Assign row values
-      switch (column)
+      switch (cell.Column)
       {
          case 0: // First Row
-            Row1[row] = cell;
+            Row1![cell.Row] = cell;
             break;
          case 1: // Second Row
-            Row2[row] = cell;
+            Row2![cell.Row] = cell;
             break;
          case 2: // Third Row
-            Row3[row] = cell;
+            Row3![cell.Row] = cell;
             break;
          case 3: // Fourth Row
-            Row1[row] = cell;
+            Row4![cell.Row] = cell;
             break;
          case 4: // Fifth Row
-            Row1[row] = cell;
+            Row5![cell.Row] = cell;
             break;
          case 5: // Sixth Row
-            Row1[row] = cell;
+            Row6![cell.Row] = cell;
             break;
          case 6: // Seventh Row
-            Row1[row] = cell;
+            Row7![cell.Row] = cell;
             break;
          case 7: // Eighth Row
-            Row1[row] = cell;
+            Row8![cell.Row] = cell;
             break;
          case 8: // Ninth Row
-            Row1[row] = cell;
+            Row9![cell.Row] = cell;
             break;
          default:
             throw ex;
       }
    }
-   private void AssignBlocksCool(ArgumentException ex, int column, int row, SudokuCell cell)
+   private void AssignBlocksCool(ArgumentException ex, SudokuCell cell)
    {
-      // Notice that the min and max numbers for both top and left, middle, and bottom and right are the same
+      // Min and max values of a single block are established for the six types of cell positions
+      bool topRow = cell.Row >= 0 && cell.Row <= 2;
+      bool middleRow = cell.Row >= 3 && cell.Row <= 5;
+      bool bottomRow = cell.Row >= 6 && cell.Row <= 8;
+      bool leftColumn = cell.Column >= 0 && cell.Column <= 2;
+      bool middleColumn = cell.Column >= 3 && cell.Column <= 5;
+      bool rightColumn = cell.Column >= 6 && cell.Column <= 8;
+
+      // Notice that the min and max numbers for top and left, middle, and bottom and right are the same
       int[] top_OR_left = { 0, 2 };
       int[] middle = { 3, 5 };
       int[] bottom_OR_right = { 6, 8 };
 
-      // Min and max values are established for the six types of cell positions
-      bool topRow = row >= 0 && row <= 2;
-      bool middleRow = row >= 3 && row <= 5;
-      bool bottomRow = row >= 6 && row <= 8;
-      bool leftColumn = column >= 0 && column <= 2;
-      bool middleColumn = column >= 3 && column <= 5;
-      bool rightColumn = column >= 6 && column <= 8;
-
-      // Booleans are assigned for each of the nine cells
+      // Booleans are assigned for each of the nine cells in a block
       bool topLeft = leftColumn && topRow;
       bool topMiddle = middleColumn && topRow;
       bool topRight = rightColumn && topRow;
@@ -197,7 +200,7 @@ public class SudokuPuzzleSolver
          int maxRow = top_OR_left[1];
          int minCol = top_OR_left[0];
          int maxCol = top_OR_left[1];
-         AssignArray(TopLeft, row, column, minRow, maxRow, minCol, maxCol, cell);
+         AssignArray(TopLeft!, minRow, maxRow, minCol, maxCol, cell);
       }
       else if (topMiddle)
       {
@@ -205,7 +208,7 @@ public class SudokuPuzzleSolver
          int maxRow = top_OR_left[1];
          int minCol = middle[0];
          int maxCol = middle[1];
-         AssignArray(TopMiddle, row, column, minRow, maxRow, minCol, maxCol, cell);
+         AssignArray(TopMiddle!, minRow, maxRow, minCol, maxCol, cell);
       }
       else if (topRight)
       {
@@ -213,7 +216,7 @@ public class SudokuPuzzleSolver
          int maxRow = top_OR_left[1];
          int minCol = bottom_OR_right[0];
          int maxCol = bottom_OR_right[1];
-         AssignArray(TopMiddle, row, column, minRow, maxRow, minCol, maxCol, cell);
+         AssignArray(TopMiddle!, minRow, maxRow, minCol, maxCol, cell);
       }
       else if (middleLeft)
       {
@@ -221,7 +224,7 @@ public class SudokuPuzzleSolver
          int maxRow = middle[1];
          int minCol = top_OR_left[0];
          int maxCol = top_OR_left[1];
-         AssignArray(TopMiddle, row, column, minRow, maxRow, minCol, maxCol, cell);
+         AssignArray(TopMiddle!, minRow, maxRow, minCol, maxCol, cell);
       }
       else if (middleMiddle)
       {
@@ -229,7 +232,7 @@ public class SudokuPuzzleSolver
          int minCol = middle[0];
          int maxRow = middle[1];
          int maxCol = middle[1];
-         AssignArray(MiddleMiddle, row, column, minRow, maxRow, minCol, maxCol, cell);
+         AssignArray(MiddleMiddle!, minRow, maxRow, minCol, maxCol, cell);
       }
       else if (middleRight)
       {
@@ -237,7 +240,7 @@ public class SudokuPuzzleSolver
          int maxRow = middle[1];
          int mincol = bottom_OR_right[0];
          int maxCol = bottom_OR_right[1];
-         AssignArray(MiddleRight, row, column, minRow, maxRow, mincol, maxCol, cell);
+         AssignArray(MiddleRight!, minRow, maxRow, mincol, maxCol, cell);
       }
       else if (bottomLeft)
       {
@@ -245,7 +248,7 @@ public class SudokuPuzzleSolver
          int maxRow = bottom_OR_right[1];
          int minCol = top_OR_left[0];
          int maxCol = top_OR_left[1];
-         AssignArray(BottomLeft, row, column, minRow, maxRow, minCol, maxCol, cell);
+         AssignArray(BottomLeft!, minRow, maxRow, minCol, maxCol, cell);
       }
       else if (bottomMiddle)
       {
@@ -253,7 +256,7 @@ public class SudokuPuzzleSolver
          int maxRow = bottom_OR_right[1];
          int minCol = middle[0];
          int maxCol = middle[1];
-         AssignArray(BottomMiddle, row, column, minRow, maxRow, minCol, maxCol, cell);
+         AssignArray(BottomMiddle!, minRow, maxRow, minCol, maxCol, cell);
       }
       else if (bottomRight)
       {
@@ -261,19 +264,19 @@ public class SudokuPuzzleSolver
          int maxRow = bottom_OR_right[1];
          int minCol = bottom_OR_right[0];
          int maxCol = bottom_OR_right[1];
-         AssignArray(BottomRight, row, column, minRow, maxRow, minCol, maxCol, cell);
+         AssignArray(BottomRight!, minRow, maxRow, minCol, maxCol, cell);
       }
    }
-   private void AssignArray(SudokuCell[] array, int row, int column, int minRow, int maxRow, int minCol, int maxCol, SudokuCell cell)
+   private void AssignArray(SudokuCell[] array, int minRow, int maxRow, int minCol, int maxCol, SudokuCell cell)
    {
       // Establish the six cell types
-      bool topRow = row == minRow;
-      bool midRow = row > minRow && row < maxRow;
-      bool botRow = row == maxRow;
+      bool topRow = cell.Row == minRow;
+      bool midRow = cell.Row > minRow && cell.Row < maxRow;
+      bool botRow = cell.Row == maxRow;
 
-      bool leftCol = column == minCol;
-      bool midCol = column > minCol && column < maxCol;
-      bool rightCol = column == maxCol;
+      bool leftCol = cell.Column == minCol;
+      bool midCol = cell.Column > minCol && cell.Column < maxCol;
+      bool rightCol = cell.Column == maxCol;
 
       // Assign the nine cells
       bool topLeft = topRow && leftCol;
@@ -307,288 +310,288 @@ public class SudokuPuzzleSolver
       else if (botRight)
          array[8] = cell;
    }
-   private void AssignBlocksSwitch(ArgumentException ex, int column, int row, SudokuCell cell)
+   private void AssignBlocksSwitch(ArgumentException ex, SudokuCell cell)
    {
-      switch ((row, column))
+      switch ((cell.Row, cell.Column))
       {
          // TopLeft
          case (0, 0):
-            TopLeft[0] = cell;
+            TopLeft![0] = cell;
             break;
          case (0, 1):
-            TopLeft[1] = cell;
+            TopLeft![1] = cell;
             break;
          case (0, 2):
-            TopLeft[2] = cell;
+            TopLeft![2] = cell;
             break;
 
          case (1, 0):
-            TopLeft[3] = cell;
+            TopLeft![3] = cell;
             break;
          case (1, 1):
-            TopLeft[4] = cell;
+            TopLeft![4] = cell;
             break;
          case (1, 2):
-            TopLeft[5] = cell;
+            TopLeft![5] = cell;
             break;
 
          case (2, 0):
-            TopLeft[6] = cell;
+            TopLeft![6] = cell;
             break;
          case (2, 1):
-            TopLeft[7] = cell;
+            TopLeft![7] = cell;
             break;
          case (2, 2):
-            TopLeft[8] = cell;
+            TopLeft![8] = cell;
             break;
 
          // TopMiddle
          case (0, 3):
-            TopMiddle[0] = cell;
+            TopMiddle![0] = cell;
             break;
          case (0, 4):
-            TopMiddle[1] = cell;
+            TopMiddle![1] = cell;
             break;
          case (0, 5):
-            TopMiddle[2] = cell;
+            TopMiddle![2] = cell;
             break;
 
          case (1, 3):
-            TopMiddle[3] = cell;
+            TopMiddle![3] = cell;
             break;
          case (1, 4):
-            TopMiddle[4] = cell;
+            TopMiddle![4] = cell;
             break;
          case (1, 5):
-            TopMiddle[5] = cell;
+            TopMiddle![5] = cell;
             break;
 
          case (2, 3):
-            TopMiddle[6] = cell;
+            TopMiddle![6] = cell;
             break;
          case (2, 4):
-            TopMiddle[7] = cell;
+            TopMiddle![7] = cell;
             break;
          case (2, 5):
-            TopMiddle[8] = cell;
+            TopMiddle![8] = cell;
             break;
 
          // TopRight
          case (0, 6):
-            TopRight[0] = cell;
+            TopRight![0] = cell;
             break;
          case (0, 7):
-            TopRight[1] = cell;
+            TopRight![1] = cell;
             break;
          case (0, 8):
-            TopRight[2] = cell;
+            TopRight![2] = cell;
             break;
 
          case (1, 6):
-            TopRight[3] = cell;
+            TopRight![3] = cell;
             break;
          case (1, 7):
-            TopRight[4] = cell;
+            TopRight![4] = cell;
             break;
          case (1, 8):
-            TopRight[5] = cell;
+            TopRight![5] = cell;
             break;
 
          case (2, 6):
-            TopRight[6] = cell;
+            TopRight![6] = cell;
             break;
          case (2, 7):
-            TopRight[7] = cell;
+            TopRight![7] = cell;
             break;
          case (2, 8):
-            TopRight[8] = cell;
+            TopRight![8] = cell;
             break;
 
          // MiddleLeft
          case (3, 0):
-            MiddleLeft[0] = cell;
+            MiddleLeft![0] = cell;
             break;
          case (3, 1):
-            MiddleLeft[1] = cell;
+            MiddleLeft![1] = cell;
             break;
          case (3, 2):
-            MiddleLeft[2] = cell;
+            MiddleLeft![2] = cell;
             break;
 
          case (4, 0):
-            MiddleLeft[3] = cell;
+            MiddleLeft![3] = cell;
             break;
          case (4, 1):
-            MiddleLeft[4] = cell;
+            MiddleLeft![4] = cell;
             break;
          case (4, 2):
-            MiddleLeft[5] = cell;
+            MiddleLeft![5] = cell;
             break;
 
          case (5, 0):
-            MiddleLeft[6] = cell;
+            MiddleLeft![6] = cell;
             break;
          case (5, 1):
-            MiddleLeft[7] = cell;
+            MiddleLeft![7] = cell;
             break;
          case (5, 2):
-            MiddleLeft[8] = cell;
+            MiddleLeft![8] = cell;
             break;
 
          // MiddleMiddle
          case (3, 3):
-            MiddleMiddle[0] = cell;
+            MiddleMiddle![0] = cell;
             break;
          case (3, 4):
-            MiddleMiddle[1] = cell;
+            MiddleMiddle![1] = cell;
             break;
          case (3, 5):
-            MiddleMiddle[2] = cell;
+            MiddleMiddle![2] = cell;
             break;
 
          case (4, 3):
-            MiddleMiddle[3] = cell;
+            MiddleMiddle![3] = cell;
             break;
          case (4, 4):
-            MiddleMiddle[4] = cell;
+            MiddleMiddle![4] = cell;
             break;
          case (4, 5):
-            MiddleMiddle[5] = cell;
+            MiddleMiddle![5] = cell;
             break;
 
          case (5, 3):
-            MiddleMiddle[6] = cell;
+            MiddleMiddle![6] = cell;
             break;
          case (5, 4):
-            MiddleMiddle[7] = cell;
+            MiddleMiddle![7] = cell;
             break;
          case (5, 5):
-            MiddleMiddle[8] = cell;
+            MiddleMiddle![8] = cell;
             break;
 
 
          // MiddleRight
          case (3, 6):
-            MiddleRight[0] = cell;
+            MiddleRight![0] = cell;
             break;
          case (3, 7):
-            MiddleRight[1] = cell;
+            MiddleRight![1] = cell;
             break;
          case (3, 8):
-            MiddleRight[2] = cell;
+            MiddleRight![2] = cell;
             break;
 
          case (4, 6):
-            MiddleRight[3] = cell;
+            MiddleRight![3] = cell;
             break;
          case (4, 7):
-            MiddleRight[4] = cell;
+            MiddleRight![4] = cell;
             break;
          case (4, 8):
-            MiddleRight[5] = cell;
+            MiddleRight![5] = cell;
             break;
 
          case (5, 6):
-            MiddleRight[6] = cell;
+            MiddleRight![6] = cell;
             break;
          case (5, 7):
-            MiddleRight[7] = cell;
+            MiddleRight![7] = cell;
             break;
          case (5, 8):
-            MiddleRight[8] = cell;
+            MiddleRight![8] = cell;
             break;
 
          // Bottom Left
          case (6, 0):
-            BottomLeft[0] = cell;
+            BottomLeft![0] = cell;
             break;
          case (6, 1):
-            BottomLeft[1] = cell;
+            BottomLeft![1] = cell;
             break;
          case (6, 2):
-            BottomLeft[2] = cell;
+            BottomLeft![2] = cell;
             break;
 
          case (7, 0):
-            BottomLeft[3] = cell;
+            BottomLeft![3] = cell;
             break;
          case (7, 1):
-            BottomLeft[4] = cell;
+            BottomLeft![4] = cell;
             break;
          case (7, 2):
-            BottomLeft[5] = cell;
+            BottomLeft![5] = cell;
             break;
 
          case (8, 0):
-            BottomLeft[6] = cell;
+            BottomLeft![6] = cell;
             break;
          case (8, 1):
-            BottomLeft[7] = cell;
+            BottomLeft![7] = cell;
             break;
          case (8, 2):
-            BottomLeft[8] = cell;
+            BottomLeft![8] = cell;
             break;
 
          // BottomMiddle
          case (6, 3):
-            BottomMiddle[0] = cell;
+            BottomMiddle![0] = cell;
             break;
          case (6, 4):
-            BottomMiddle[1] = cell;
+            BottomMiddle![1] = cell;
             break;
          case (6, 5):
-            BottomMiddle[2] = cell;
+            BottomMiddle![2] = cell;
             break;
 
          case (7, 3):
-            BottomMiddle[3] = cell;
+            BottomMiddle![3] = cell;
             break;
          case (7, 4):
-            BottomMiddle[4] = cell;
+            BottomMiddle![4] = cell;
             break;
          case (7, 5):
-            BottomMiddle[5] = cell;
+            BottomMiddle![5] = cell;
             break;
 
          case (8, 3):
-            BottomMiddle[6] = cell;
+            BottomMiddle![6] = cell;
             break;
          case (8, 4):
-            BottomMiddle[7] = cell;
+            BottomMiddle![7] = cell;
             break;
          case (8, 5):
-            BottomMiddle[8] = cell;
+            BottomMiddle![8] = cell;
             break;
 
          // BottomRight
          case (6, 6):
-            BottomRight[0] = cell;
+            BottomRight![0] = cell;
             break;
          case (6, 7):
-            BottomRight[1] = cell;
+            BottomRight![1] = cell;
             break;
          case (6, 8):
-            BottomRight[2] = cell;
+            BottomRight![2] = cell;
             break;
 
          case (7, 6):
-            BottomRight[3] = cell;
+            BottomRight![3] = cell;
             break;
          case (7, 7):
-            BottomRight[4] = cell;
+            BottomRight![4] = cell;
             break;
          case (7, 8):
-            BottomRight[5] = cell;
+            BottomRight![5] = cell;
             break;
 
          case (8, 6):
-            BottomRight[6] = cell;
+            BottomRight![6] = cell;
             break;
          case (8, 7):
-            BottomRight[7] = cell;
+            BottomRight![7] = cell;
             break;
          case (8, 8):
-            BottomRight[8] = cell;
+            BottomRight![8] = cell;
             break;
 
          default:
@@ -597,9 +600,14 @@ public class SudokuPuzzleSolver
    }
 
    public void Solve()
-   { }
+   {
+      foreach (var array in AllRows)
+      {
+         GuessNewNumbers(array);
+      }
+   }
 
-   public int DuplicateFound(bool foundDuplicates, SudokuCell[] array)
+   public int DuplicateFound(SudokuCell[] array)
    {
       foreach (var value in array)
       {
@@ -617,23 +625,6 @@ public class SudokuPuzzleSolver
       return 0;
    }
 
-   public bool FoundDuplicates(SudokuCell[] array)
-   {
-      foreach (var value in array)
-      {
-         int number =
-         (
-            from cell in array
-            where cell.Value == value.Value
-            select cell
-         ).Count();
-         if (number > 1)
-            return true;
-      }
-      return false;
-
-   }
-
    public SudokuCell[] RemoveDuplicates(int duplicatedNumber, SudokuCell[] array)
    {
       foreach (var cell in array)
@@ -645,7 +636,7 @@ public class SudokuPuzzleSolver
    }
    public SudokuCell[] GuessNewNumbers(SudokuCell[] array)
    {
-      List<int> validValues = new() { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+      List<int> validValues = new(9) { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
       foreach (var cell in array)
       {
          if (cell.Unchangeable)
