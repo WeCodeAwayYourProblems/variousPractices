@@ -19,17 +19,18 @@ public class BasicStringProofs
    }
    [
       Theory,
-      InlineData(new char[] { 't', 'h', 'i', 's', ' ', 'i', 's', ' ', 'a', ' ', 's', 't', 'r', 'i', 'n', 'g' }, "this is a string")
+      InlineData(new char[] { 't', 'h', 'i', 's', ' ', 'i', 's', ' ', 'a', ' ', 's', 't', 'r', 'i', 'n', 'g' }, "this is a string"),
+      InlineData(new char[] { 'y', 'o', 'u', ' ', 'a', 'r', 'e', ' ', 'a', 'm', 'a', 'z', 'i', 'n', 'g', '!' }, "you are amazing!")
    ]
    public void CharacterCollectionsConvertedToStringContainExpectedValues(char[] input, string expected)
    {
       // Actual
-      string actual1 = string.Concat(input);
-      string actual2 = new string(input);
+      string concatMethod = string.Concat(input);
+      string newStringMethod = new string(input);
 
       // Assertions
-      Assert.Equal(expected, actual1);
-      Assert.Equal(expected, actual2);
+      Assert.Equal(expected, concatMethod);
+      Assert.Equal(expected, newStringMethod);
    }
    [Fact]
    public void ComparisonOperatorsWorkForIndividualCharacters()
