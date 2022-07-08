@@ -17,6 +17,16 @@ public class SudokuCell
       Row = row;
       Column = column;
    }
+   public SudokuCell(int value, int row, int column, bool changeable)
+   {
+      if (value < 0 || value > 9)
+         throw new ArgumentNullException("Original puzzle contains invalid numbers.");
+
+      Value = value;
+      Row = row;
+      Column = column;
+      Unchangeable = !changeable;
+   }
    public readonly bool Unchangeable;
    public bool Changeable
    { get => !Unchangeable; }
