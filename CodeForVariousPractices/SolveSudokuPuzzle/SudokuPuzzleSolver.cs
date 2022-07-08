@@ -4,50 +4,6 @@ public class SudokuPuzzleSolver
 {
    public SudokuPuzzleSolver(SudokuCell[][] board)
    {
-      // Assign column, row, and blocks to new arrays
-      Column1 = new SudokuCell[9];
-      Column2 = new SudokuCell[9];
-      Column3 = new SudokuCell[9];
-      Column4 = new SudokuCell[9];
-      Column5 = new SudokuCell[9];
-      Column6 = new SudokuCell[9];
-      Column7 = new SudokuCell[9];
-      Column8 = new SudokuCell[9];
-      Column9 = new SudokuCell[9];
-      AllColumns = new SudokuCell[][] { Column1, Column2, Column3, Column4, Column5, Column6, Column7, Column8, Column9 };
-
-      Row1 = new SudokuCell[9];
-      Row2 = new SudokuCell[9];
-      Row3 = new SudokuCell[9];
-      Row4 = new SudokuCell[9];
-      Row5 = new SudokuCell[9];
-      Row6 = new SudokuCell[9];
-      Row7 = new SudokuCell[9];
-      Row8 = new SudokuCell[9];
-      Row9 = new SudokuCell[9];
-      AllRows = new SudokuCell[][]
-      {
-         Row1, Row2, Row3, Row4, Row5, Row6, Row7, Row8, Row9
-      };
-
-      TopLeft = new SudokuCell[9];
-      TopMiddle = new SudokuCell[9];
-      TopRight = new SudokuCell[9];
-      MiddleLeft = new SudokuCell[9];
-      MiddleMiddle = new SudokuCell[9];
-      MiddleRight = new SudokuCell[9];
-      BottomLeft = new SudokuCell[9];
-      BottomMiddle = new SudokuCell[9];
-      BottomRight = new SudokuCell[9];
-      AllBlocks = new SudokuCell[][]
-      {
-         TopLeft, TopMiddle, TopRight, MiddleLeft, MiddleMiddle, MiddleRight, BottomLeft, BottomMiddle, BottomRight
-      };
-
-      // // Iterate through the puzzle board
-      // for (var row = 0; row < board.Length; row++)
-      //    AllRows[row] = board[row];
-
       // Assign each column 
       foreach (var array in board)
       {
@@ -208,30 +164,16 @@ public class SudokuPuzzleSolver
       {
          // Guess numbers for all rows of sudoku table
          foreach (var array in AllRows)
-         { GuessNewNumbers(array); }
+            GuessNewNumbers(array);
 
          // Check for duplicates in all the columns
          bool duplicates = false;
          foreach (var array in AllColumns)
-         {
-            int[] value = DuplicateFound(array);
-            if (value.Length > 0)
-            {
-               RemoveDuplicates(value, array);
-               duplicates = true;
-            }
-         }
+            duplicates = DuplicatesWereFoundAndRemoved(duplicates, array);
 
          // Check for duplicates in all the blocks
          foreach (var array in AllBlocks)
-         {
-            int[] value = DuplicateFound(array);
-            if (value.Length > 1)
-            {
-               RemoveDuplicates(value, array);
-               duplicates = true;
-            }
-         }
+            duplicates = DuplicatesWereFoundAndRemoved(duplicates, array);
          if (duplicates)
             continue;
 
@@ -239,52 +181,87 @@ public class SudokuPuzzleSolver
          solved = true;
       }
       return AllRows;
+
+      bool DuplicatesWereFoundAndRemoved(bool duplicates, SudokuCell[] array)
+      {
+         if (FoundDuplicates(array))
+         {
+            RemoveDuplicates(array);
+            duplicates = true;
+         }
+
+         return duplicates;
+      }
    }
 
    public int[] DuplicateFound(SudokuCell[] array)
    {
-      int[] cellArray = array.GroupBy(x => x.Value)
+      // Find all duplicates
+      List<int> cellList = array.GroupBy(x => x.Value)
          .Where(g => g.Count() > 1)
          .Select(y => y.Key)
-         .ToArray();
-      return cellArray;
+         .ToList();
+
+      // Remove 0 from the list
+      if (cellList.Contains(0))
+         cellList.Remove(0);
+
+      return cellList.ToArray();
+   }
+   public bool FoundDuplicates(SudokuCell[] array)
+   {
+      // Find all duplicates
+      int[] duplicates = DuplicateFound(array);
+
+      // If there are any duplicates, return true
+      if (duplicates.Length > 0)
+         return true;
+      return false;
    }
 
    public SudokuCell[] RemoveDuplicates(int[] duplicatedNumber, SudokuCell[] array)
    {
       foreach (var duplicate in duplicatedNumber)
-      {
-         int found = 0;
          foreach (var cell in array)
-         {
-            if (duplicate == cell.Value && found == 0)
-            {
-               found++;
-               continue;
-            }
-            // Revert every cell that is contained in
-            if (duplicatedNumber.Contains(cell.Value) && cell.Changeable)
+            if (cell.Value == duplicate && cell.Changeable)
                cell.Value = 0;
-         }
-      }
       return array;
    }
+
+   public SudokuCell[] RemoveDuplicates(SudokuCell[] array) =>
+      RemoveDuplicates(DuplicateFound(array), array);
    public SudokuCell[] GuessNewNumbers(SudokuCell[] array)
    {
       List<int> validValues = new(9) { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+      // Remove any permanent values from the list of valid values
       foreach (var cell in array)
-      {
          if (cell.Unchangeable)
-         {
             validValues.Remove(cell.Value);
-            continue;
-         }
-      }
+
+      // Assign new values for any empty cells
+      // ... without duplicating values in columns or blocks
       foreach (var cell in array)
       {
+         IEnumerable<int> columnValues = FindColumnValues(cell);
+         IEnumerable<int> blockValues = FindBlockValues(cell);
+
+         // Add the new value to the current cell
          if (cell.Value == 0)
          {
+            // Set the new value for the cell
             int newVal = validValues[0];
+
+            // Prevent cell value duplication
+            // ... by checking the columns and blocks for the new value
+            foreach (var value in validValues)
+            {
+               if (columnValues.Contains(value) || blockValues.Contains(value))
+                  continue;
+
+               newVal = value;
+               break;
+            }
             cell.Value = newVal;
             validValues.Remove(newVal);
          }
@@ -292,36 +269,66 @@ public class SudokuPuzzleSolver
 
       return array;
    }
-   private SudokuCell[][] AllColumns { get; set; }
-   private SudokuCell[][] AllRows { get; set; }
-   private SudokuCell[][] AllBlocks { get; set; }
 
-   private static SudokuCell[]? Column1 { get; set; }
-   private static SudokuCell[]? Column2 { get; set; }
-   private static SudokuCell[]? Column3 { get; set; }
-   private static SudokuCell[]? Column4 { get; set; }
-   private static SudokuCell[]? Column5 { get; set; }
-   private static SudokuCell[]? Column6 { get; set; }
-   private static SudokuCell[]? Column7 { get; set; }
-   private static SudokuCell[]? Column8 { get; set; }
-   private static SudokuCell[]? Column9 { get; set; }
-   private static SudokuCell[]? Row1 { get; set; }
-   private static SudokuCell[]? Row2 { get; set; }
-   private static SudokuCell[]? Row3 { get; set; }
-   private static SudokuCell[]? Row4 { get; set; }
-   private static SudokuCell[]? Row5 { get; set; }
-   private static SudokuCell[]? Row6 { get; set; }
-   private static SudokuCell[]? Row7 { get; set; }
-   private static SudokuCell[]? Row8 { get; set; }
-   private static SudokuCell[]? Row9 { get; set; }
-   private static SudokuCell[]? TopLeft { get; set; }
-   private static SudokuCell[]? TopMiddle { get; set; }
-   private static SudokuCell[]? TopRight { get; set; }
-   private static SudokuCell[]? MiddleLeft { get; set; }
-   private static SudokuCell[]? MiddleMiddle { get; set; }
-   private static SudokuCell[]? MiddleRight { get; set; }
-   private static SudokuCell[]? BottomLeft { get; set; }
-   private static SudokuCell[]? BottomMiddle { get; set; }
-   private static SudokuCell[]? BottomRight { get; set; }
+   private List<int> FindColumnValues(SudokuCell cell)
+   {
+      var columnArray = AllColumns[cell.Column];
+      List<int> columnArrayValues = new();
+      foreach (var item in columnArray)
+         columnArrayValues.Add(item.Value);
+      return columnArrayValues;
+   }
+
+   private List<int> FindBlockValues(SudokuCell cell)
+   {
+      // Determine which block the current cell is in
+      int index = -1;
+      for (var i = 0; i < AllBlocks.Length; i++)
+      {
+         if (AllBlocks[i].Contains(cell))
+         {
+            index = i;
+            break;
+         }
+      }
+      // Convert the cell array to an int array
+      List<int> returnArray = new();
+      foreach (var item in AllBlocks[index])
+         returnArray.Add(item.Value);
+
+      return returnArray;
+   }
+
+   private SudokuCell[][] AllColumns = new SudokuCell[][] { Column1!, Column2!, Column3!, Column4!, Column5!, Column6!, Column7!, Column8!, Column9! };
+   private SudokuCell[][] AllRows = new SudokuCell[][] { Row1!, Row2!, Row3!, Row4!, Row5!, Row6!, Row7!, Row8!, Row9! };
+   private SudokuCell[][] AllBlocks = new SudokuCell[][] { TopLeft!, TopMiddle!, TopRight!, MiddleLeft!, MiddleMiddle!, MiddleRight!, BottomLeft!, BottomMiddle!, BottomRight! };
+
+   private static SudokuCell[]? Column1 = new SudokuCell[9];
+   private static SudokuCell[]? Column2 = new SudokuCell[9];
+   private static SudokuCell[]? Column3 = new SudokuCell[9];
+   private static SudokuCell[]? Column4 = new SudokuCell[9];
+   private static SudokuCell[]? Column5 = new SudokuCell[9];
+   private static SudokuCell[]? Column6 = new SudokuCell[9];
+   private static SudokuCell[]? Column7 = new SudokuCell[9];
+   private static SudokuCell[]? Column8 = new SudokuCell[9];
+   private static SudokuCell[]? Column9 = new SudokuCell[9];
+   private static SudokuCell[]? Row1 = new SudokuCell[9];
+   private static SudokuCell[]? Row2 = new SudokuCell[9];
+   private static SudokuCell[]? Row3 = new SudokuCell[9];
+   private static SudokuCell[]? Row4 = new SudokuCell[9];
+   private static SudokuCell[]? Row5 = new SudokuCell[9];
+   private static SudokuCell[]? Row6 = new SudokuCell[9];
+   private static SudokuCell[]? Row7 = new SudokuCell[9];
+   private static SudokuCell[]? Row8 = new SudokuCell[9];
+   private static SudokuCell[]? Row9 = new SudokuCell[9];
+   private static SudokuCell[]? TopLeft = new SudokuCell[9];
+   private static SudokuCell[]? TopMiddle = new SudokuCell[9];
+   private static SudokuCell[]? TopRight = new SudokuCell[9];
+   private static SudokuCell[]? MiddleLeft = new SudokuCell[9];
+   private static SudokuCell[]? MiddleMiddle = new SudokuCell[9];
+   private static SudokuCell[]? MiddleRight = new SudokuCell[9];
+   private static SudokuCell[]? BottomLeft = new SudokuCell[9];
+   private static SudokuCell[]? BottomMiddle = new SudokuCell[9];
+   private static SudokuCell[]? BottomRight = new SudokuCell[9];
 
 }
