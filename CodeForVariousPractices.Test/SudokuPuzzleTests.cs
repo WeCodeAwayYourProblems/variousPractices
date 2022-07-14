@@ -4,17 +4,17 @@ namespace CodeForVariousPracices.SolveSudokuPuzzle.Test;
 
 public class SudokuPuzzleTests
 {
-   private SudokuCell[][] Board;
-   private SudokuPuzzleSolver Solver;
-   private SudokuCell[] Row1;
-   private SudokuCell[] Row2;
-   private SudokuCell[] Row3;
-   private SudokuCell[] Row4;
-   private SudokuCell[] Row5;
-   private SudokuCell[] Row6;
-   private SudokuCell[] Row7;
-   private SudokuCell[] Row8;
-   private SudokuCell[] Row9;
+   private readonly SudokuCell[][] Board;
+   private readonly SudokuPuzzleSolver Solver;
+   private readonly SudokuCell[] Row1;
+   private readonly SudokuCell[] Row2;
+   private readonly SudokuCell[] Row3;
+   private readonly SudokuCell[] Row4;
+   private readonly SudokuCell[] Row5;
+   private readonly SudokuCell[] Row6;
+   private readonly SudokuCell[] Row7;
+   private readonly SudokuCell[] Row8;
+   private readonly SudokuCell[] Row9;
    public SudokuPuzzleTests()
    {
       // Instantiate rows
@@ -46,63 +46,8 @@ public class SudokuPuzzleTests
          Board[cell.Row][cell.Column] = cell;
 
       // Instantiate the solver
-      Solver = new(Board);
+      Solver = new();
    }
-
-   [
-      Theory,
-      InlineData(new int[9] { 9, 9, 4, 5, 7, 7, 8, 0, 0 }, new int[] { 9, 7 }, new int[9] { 0, 0, 4, 5, 0, 0, 8, 0, 0 })
-   ]
-   public void RemoveDuplicatesMethod_ReturnsAnArrayWithoutDuplicates(int[] input, int[] duplicates, int[] expected)
-   {
-      SudokuCell[] sudokuCellsArray = ConvertIntegerArrayIntoSudokuCellArray(input);
-
-      // Remove Duplicates
-      SudokuCell[] withoutDuplicates = Solver.RemoveDuplicates(duplicates, sudokuCellsArray);
-
-      // Convert the duplicates to an integer array
-      List<int> values = ConvertSudokuCellArrayToListOfInt(withoutDuplicates);
-
-      int[] actual = values.ToArray();
-
-      // Assertions
-      Assert.Equal(expected, actual);
-   }
-   [
-      Theory,
-      InlineData(new int[9] { 9, 9, 4, 5, 7, 7, 8, 0, 0 }, new int[9] { 0, 0, 4, 5, 0, 0, 8, 0, 0 })
-   ]
-   public void RemoveDuplicatesMethodOverload_ReturnsAnArrayWithoutDuplicates(int[] input, int[] expected)
-   {
-      var cellsArray = ConvertIntegerArrayIntoSudokuCellArray(input);
-
-      // remove Duplicates
-      var noDuplicates = Solver.RemoveDuplicates(cellsArray);
-
-      // Convert duplicates to integer array
-      int[] actual = ConvertSudokuCellArrayToListOfInt(noDuplicates).ToArray();
-
-      // Assertions
-      Assert.Equal(expected, actual);
-   }
-
-
-   [
-      Theory,
-      InlineData(new int[9] { 0, 0, 0, 7, 8, 7, 9, 9, 9 }, new int[2] { 7, 9 })
-   ]
-   public void FindDuplicatesMethod_ReturnsArray(int[] input, int[] expected)
-   {
-      // Convert input to an array of sudoku cells
-      SudokuCell[] sudokuCellArray = ConvertIntegerArrayIntoSudokuCellArray(input);
-
-      // Find duplicates
-      int[] actual = Solver.DuplicateFound(sudokuCellArray);
-
-      // Assertions
-      Assert.Equal(expected, actual);
-   }
-
 
    // Reusable code
    private SudokuCell[] ConvertIntegerArrayIntoSudokuCellArray(int[] input)

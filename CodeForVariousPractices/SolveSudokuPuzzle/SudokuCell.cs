@@ -35,5 +35,6 @@ public class SudokuCell
 
    public readonly int Row;
    public readonly int Column;
+   public int BlockIndex { get; set; }
 
 }

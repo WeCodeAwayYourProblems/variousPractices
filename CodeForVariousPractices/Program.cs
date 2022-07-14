@@ -58,19 +58,19 @@ static class Program
       // Find the solution to Sudoku Puzzle
       string path = @"C:\Users\ben.bowen_fox-pest\CS_area\Portfolio\variousPractices\CodeForVariousPractices\SolveSudokuPuzzle\UnsolvedPuzzles\Puzzle1.csv";
       SudokuCsvReader reader = new SudokuCsvReader(path, emptyCell: "0", delimiter: ",");
-      SudokuPuzzleSolver solver = new(reader.ReadBoard());
 
+      SudokuPuzzleSolver solver = new();
 
       // Place the solution in a csv file
-      string solutionFile = @"C:\Users\ben.bowen_fox-pest\CS_area\Portfolio\variousPractices\CodeForVariousPractices\SolveSudokuPuzzle\SolvedPuzzles\SolutionToPuzzle1.csv";
-      var array = solver.Solve();
+      string solutionFile = @"C:\Users\ben.bowen_fox-pest\CS_area\Portfolio\variousPractices\CodeForVariousPractices\SolveSudokuPuzzle\SolvedPuzzles\SolutionToPuzzle_1.csv";
+      SudokuBoard solutions = solver.Solve(new SudokuBoard(reader.ReadBoard()));
       StringBuilder sb = new();
-      foreach (var row in array)
+      foreach (var row in solutions.AllRows)
       {
          for (var cell = 0; cell < row.Length; cell++)
          {
             sb.Append($"{row[cell].Value}");
-            if (cell >= row.Length - 1)
+            if (cell <= row.Length - 1)
                sb.Append(",");
          }
          sb.Append("\n");
